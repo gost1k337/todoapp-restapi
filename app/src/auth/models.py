@@ -1,10 +1,13 @@
-from ..database import db
+from src.database import Column, Model, db
+from datetime import datetime
 
 
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    email = db.Column(db.String(120), unique=True, nullable=False)
+class User(Model):
+    id = Column(db.Integer, primary_key=True)
+    username = Column(db.String(80), nullable=False)
+    email = Column(db.String(128), unique=True, nullable=False)
+    password_hash = Column(db.String(128), nullable=False)
+    created_at = Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def __repr__(self):
         return f'<User {self.username}>'

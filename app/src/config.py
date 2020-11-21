@@ -5,3 +5,5 @@ SQLALCHEMY_DATABASE_URI = f'postgresql://' \
                           f'{os.environ["POSTGRES_PW"]}@' \
                           f'{os.environ["POSTGRES_HOST"]}/' \
                           f'{os.environ["POSTGRES_DB"]}' \
+
+SECRET_KEY = os.getenv('SECRET_KEY')

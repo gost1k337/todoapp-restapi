@@ -1,5 +1,7 @@
 from flask_sqlalchemy import SQLAlchemy, Model
 from flask_migrate import Migrate
+from flask_marshmallow import Marshmallow
+from flask_jwt_extended import JWTManager
 
 
 class CRUDMixin(Model):
@@ -27,4 +29,7 @@ class CRUDMixin(Model):
 
 db = SQLAlchemy()
 migrate = Migrate()
+ma = Marshmallow()
+
+jwt = JWTManager()
 

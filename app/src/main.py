@@ -1,5 +1,5 @@
 from flask import Flask
-from .extensions import db, migrate
+from .extensions import db, migrate, ma
 from . import config
 from . import auth
 
@@ -13,18 +13,14 @@ def create_app():
     return app
 
 
-def register_extensions(app):
+def register_extensions(app: Flask):
     db.init_app(app)
-    migrate.init_app(app)
+    migrate.init_app(app, db)
+    ma.init_app(app)
 
 
-def register_blueprints(app):
+def register_blueprints(app: Flask):
     app.register_blueprint(auth.views.blueprint)
 
 
 app = create_app()
-
-
-@app.route('/')
-def home():
-    return 'hello world'
