@@ -1,7 +1,14 @@
 from flask.cli import FlaskGroup
-from src.main import app, db
+from src.main import app, db, migrate
 
 cli = FlaskGroup(app)
+
+
+@cli.command('create_db')
+def create_db():
+    db.drop_all()
+    db.create_all()
+    db.session.commit()
 
 
 if __name__ == '__main__':
