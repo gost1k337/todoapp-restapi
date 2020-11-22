@@ -12,9 +12,8 @@ RUN pipenv lock --requirements > requirements.txt
 
 RUN pip install -r /usr/src/app/requirements.txt
 
-COPY . /usr/srs/app/
 
-#CMD ["pipenv", "run", "flask", "run", "--host", "0.0.0.0", "--port", "$APP_PORT"]
+COPY . /usr/src/app/
 
-# run entrypoint.sh
-ENTRYPOINT ["sh", "/usr/src/app/entrypoint.sh"]
+
+CMD ["pipenv", "run", "flask", "run", "--host", "0.0.0.0", "--port", "$APP_PORT"]
