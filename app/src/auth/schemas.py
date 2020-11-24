@@ -1,17 +1,23 @@
-from marshmallow import fields
-from flask_marshmallow import Schema
+from marshmallow_sqlalchemy import ModelSchema
+from marshmallow import fields, Schema
+from src.extensions import ma, db
+from datetime import datetime
 from .models import User
 
 
 class UserSchema(Schema):
-    id = fields.Integer()
+    id = fields.Integer(required=False, dump_only=True)
     username = fields.Str()
     email = fields.Email()
-    password = fields.Str()
-    created_at = fields.DateTime()
+    password = fields.Str(
+        load_only=True,
+    created_at = fields.DateTime(default=datetime.utcnow, required=False, dump_only=True)
 
     class Meta:
-        fields = ('id', 'email', 'username', 'created_at')
+        fields = ('id', 'username', 'password', 'email', 'created_at')
+        sqla_session = db.session
 
 
 user_schema = UserSchema()
+user_in_schema = UserSchema()
+users_schema = UserSchema(many=True)

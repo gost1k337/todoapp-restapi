@@ -1,5 +1,5 @@
 from flask import Flask
-from .extensions import db, migrate, ma
+from .extensions import db, migrate, ma, jwt
 from . import config
 from . import auth
 
@@ -17,6 +17,7 @@ def register_extensions(app: Flask):
     db.init_app(app)
     migrate.init_app(app, db)
     ma.init_app(app)
+    jwt.init_app(app)
 
 
 def register_blueprints(app: Flask):
