@@ -13,7 +13,7 @@ class AuthService(object):
         email, password = request.json.get('email'), request.json.get('password')
         errors = user_in_schema.validate({'email': email, 'password': password})
         if errors:
-            return jsonify({'message': errors})
+            return jsonify({'message': errors}), 400
         is_exist = self.is_user_exist(email)
         if not is_exist:
             return jsonify({'message': 'User doesn\'t exist'}), 400
@@ -25,6 +25,11 @@ class AuthService(object):
     def register(self, request):
         username, email, password = request.json.get('username'), request.json.get('email'),\
                                     request.json.get('password')
+        errors = user_in_schema.validate({'email': email,
+                                          'password': password,
+                                          'username': username})
+        if errors:
+            return jsonify({'message': errors}), 400
         is_exist = self.is_user_exist(email)
         if is_exist:
             return jsonify({'message': 'User with this email already exists'}), 400
