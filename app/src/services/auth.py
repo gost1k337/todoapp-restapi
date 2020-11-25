@@ -1,4 +1,6 @@
 from flask_jwt_extended import create_access_token, get_jwt_identity
+from werkzeug.security import generate_password_hash
+
 from src.database import db
 from flask import jsonify
 from src.auth.models import User
@@ -37,7 +39,8 @@ class AuthService(object):
         is_exist = self.is_user_exist(email)
         if is_exist:
             return jsonify({'message': {'email': 'User with this email already exists'}}), 400
-        user = User(email=email, password_hash=password, username=username)
+        password_hash = generate_password_hash(password)
+        user = User(email=email, password_hash=password_hash, username=username)
         access_token = create_access_token(identity=user.id)
         user.save()
         return jsonify(access_token=access_token), 200

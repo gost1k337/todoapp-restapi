@@ -7,10 +7,8 @@ from .models import User
 class UserSchema(Schema):
     id = fields.Integer(required=False, dump_only=True)
     username = fields.Str()
-    email = fields.Email()
-    password = fields.Str(load_only=True, error_messages={
-        'null': 'Password is required.'
-    })
+    email = fields.Email(error_messages={'null': 'Email is required'})
+    password = fields.Str(load_only=True, error_messages={'null': 'Password is required.'})
     created_at = fields.DateTime(default=datetime.utcnow, required=False, dump_only=True)
 
     class Meta:
