@@ -1,21 +1,17 @@
 from flask_jwt_extended import create_access_token, get_jwt_identity
 from werkzeug.security import generate_password_hash
-
 from src.database import db
 from flask import jsonify
 from src.auth.models import User
-from src.auth.schemas import user_schema, users_schema, UserSchema, user_in_schema
+from src.auth.schemas import user_schema, users_schema, user_in_schema
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 ALGORITHM = 'HS256'
 
 
 class AuthService(object):
-    def login(self, request):
-        email, password = request.json.get('email'), request.json.get('password')
-        errors = user_in_schema.validate({'email': email, 'password': password})
-        if errors:
-            return jsonify({'message': errors}), 400
+    def login(self, email, password):
+
         is_exist = self.is_user_exist(email)
         if not is_exist:
             return jsonify({'message': {'email': 'User doesn\'t exist'}}), 400
@@ -28,14 +24,7 @@ class AuthService(object):
 
         return jsonify(access_token=access_token), 200
 
-    def register(self, request):
-        username, email, password = request.json.get('username'), request.json.get('email'),\
-                                    request.json.get('password')
-        errors = user_in_schema.validate({'email': email,
-                                          'password': password,
-                                          'username': username})
-        if errors:
-            return jsonify({'message': errors}), 400
+    def register(self, email, password, username):
         is_exist = self.is_user_exist(email)
         if is_exist:
             return jsonify({'message': {'email': 'User with this email already exists'}}), 400
