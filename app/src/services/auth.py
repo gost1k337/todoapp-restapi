@@ -16,7 +16,11 @@ class AuthService(object):
             return jsonify({'message': errors}), 400
         is_exist = self.is_user_exist(email)
         if not is_exist:
-            return jsonify({'message': 'User doesn\'t exist'}), 400
+            return jsonify({'message': {'email': 'User doesn\'t exist'}}), 400
+
+        user = User.query.filter_by(email=email).first()
+        if not user.check_password(password):
+            return jsonify({'message': {'password': 'Password is not correct'}})
 
         access_token = create_access_token(identity=email)
 
@@ -32,7 +36,7 @@ class AuthService(object):
             return jsonify({'message': errors}), 400
         is_exist = self.is_user_exist(email)
         if is_exist:
-            return jsonify({'message': 'User with this email already exists'}), 400
+            return jsonify({'message': {'email': 'User with this email already exists'}}), 400
         user = User(email=email, password_hash=password, username=username)
         access_token = create_access_token(identity=user.id)
         user.save()
