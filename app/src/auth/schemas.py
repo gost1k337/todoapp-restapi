@@ -1,7 +1,6 @@
 from marshmallow import fields, Schema
-from src.extensions import ma, db
+from src.extensions import db
 from datetime import datetime
-from .models import User
 
 
 class UserSchema(Schema):

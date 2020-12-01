@@ -23,6 +23,14 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - ${POSTGRES_PORT}:5432
+    redis:
+      image: redis:alpine
+      command: redis-server
+      restart: unless-stopped
+      ports:
+        - ${REDIS_PORT}:6379
+      environment:
+        - REDIS_REPLICATION_MODE=master
 
 volumes:
   postgres_data:

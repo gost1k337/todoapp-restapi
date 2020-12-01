@@ -1,8 +1,6 @@
 from src.database import Column, Model, db
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy.orm import validates
 from datetime import datetime
-import re
 
 
 class User(Model):
