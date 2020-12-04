@@ -27,7 +27,7 @@ def register_user():
                                       'password': password,
                                       'username': username})
     if errors:
-        return jsonify({'message': errors}), 400
+        return jsonify({'msg': errors}), 400
 
     return auth.register(email, password, username)
 
@@ -35,4 +35,4 @@ def register_user():
 @blueprint.route(f'{URL_RESOURCE}/users', methods=('GET',))
 def get_users():
     users = User.query.all()
-    return {'users': users_schema.dump(users)}
+    return {'users': users_schema.dump(users)}, 200

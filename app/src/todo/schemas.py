@@ -3,10 +3,10 @@ from datetime import datetime
 
 
 class TodoSchema(Schema):
-    id = fields.Integer()
+    id = fields.Integer(required=False, dump_only=True)
     title = fields.Str()
-    completed = fields.Boolean()
-    user_id = fields.Integer()
+    completed = fields.Boolean(required=False)
+    user_id = fields.Integer(required=False, dump_only=True)
     created_at = fields.DateTime(default=datetime.utcnow, required=False, dump_only=True)
 
     class Meta:
@@ -14,4 +14,4 @@ class TodoSchema(Schema):
 
 
 todo_schema = TodoSchema()
-users_schema = TodoSchema(many=True)
+todos_schema = TodoSchema(many=True)

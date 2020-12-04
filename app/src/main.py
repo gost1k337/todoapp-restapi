@@ -1,7 +1,7 @@
 from flask import Flask
 from .extensions import db, migrate, ma, jwt
 from . import config
-from . import auth
+from . import auth, todo
 
 
 def create_app():
@@ -22,6 +22,7 @@ def register_extensions(app: Flask):
 
 def register_blueprints(app: Flask):
     app.register_blueprint(auth.views.blueprint)
+    app.register_blueprint(todo.views.blueprint)
 
 
 app = create_app()

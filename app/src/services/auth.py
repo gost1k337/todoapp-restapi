@@ -5,7 +5,7 @@ from flask import jsonify
 from src.auth.models import User
 from src.auth.schemas import user_schema, users_schema, user_in_schema
 
-ACCESS_TOKEN_EXPIRE_MINUTES = 30
+ACCESS_TOKEN_EXPIRE_MINUTES = 120
 ALGORITHM = 'HS256'
 
 
@@ -14,24 +14,24 @@ class AuthService(object):
 
         is_exist = self.is_user_exist(email)
         if not is_exist:
-            return jsonify({'message': {'email': 'User doesn\'t exist'}}), 400
+            return jsonify({'msg': {'email': 'User doesn\'t exist'}}), 400
 
         user = User.query.filter_by(email=email).first()
         if not user.check_password(password):
-            return jsonify({'message': {'password': 'Password is not correct'}})
+            return jsonify({'msg': {'password': 'Password is not correct'}})
 
-        access_token = create_access_token(identity=email)
+        access_token = create_access_token(identity=user.id)
 
         return jsonify(access_token=access_token), 200
 
     def register(self, email, password, username):
         is_exist = self.is_user_exist(email)
         if is_exist:
-            return jsonify({'message': {'email': 'User with this email already exists'}}), 400
+            return jsonify({'msg': {'email': 'User with this email already exists'}}), 400
         password_hash = generate_password_hash(password)
         user = User(email=email, password_hash=password_hash, username=username)
-        access_token = create_access_token(identity=user.id)
         user.save()
+        access_token = create_access_token(identity=user.id)
         return jsonify(access_token=access_token), 200
 
     def is_user_exist(self, email):
