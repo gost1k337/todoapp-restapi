@@ -17,8 +17,7 @@ class TodoView(views.MethodView):
 
     @jwt_required
     def get(self):
-        todos = Todo.query.all()
-        return jsonify({'todos': todos_schema.dump(todos)}), 200
+        return auth.get_todos(), 200
 
     @jwt_required
     def post(self):
@@ -27,9 +26,7 @@ class TodoView(views.MethodView):
         if errors:
             return jsonify({'msg': errors}), 400
         user_id = get_jwt_identity()
-        todo = Todo(title=title)
-        todo.user_id = user_id
-        todo.save()
+        auth.create_todo(user_id, title)
         return jsonify({'msg': 'Todo has been created'}), 200
 
 
@@ -39,21 +36,15 @@ class TodoChangeView(views.MethodView):
     @jwt_required
     def put(self, todo_id):
         title, completed = request.json.get('title'), request.json.get('completed')
-        todo = Todo.query.filter_by(id=todo_id).first()
-        todo.title = title
-        todo.completed = completed
-        todo.save()
-        return jsonify({'todo': todo_schema.dump(todo)}), 200
+        return auth.change_todo(todo_id, title, completed)
 
     @jwt_required
     def delete(self, todo_id):
-        Todo.query.filter_by(id=todo_id).first().delete()
-        return jsonify({'msg': 'Todo has been deleted'}), 200
+        auth.delete_todo(todo_id)
 
     @jwt_required
     def get(self, todo_id):
-        todo = Todo.query.filter_by(id=todo_id).first()
-        return jsonify(todo_schema.dump(todo)), 200
+        return auth.get_todo(todo_id)
 
 
 blueprint.add_url_rule(f'{URL_RESOURCE}', view_func=TodoView.as_view('todos'))

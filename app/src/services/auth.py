@@ -3,7 +3,6 @@ from werkzeug.security import generate_password_hash
 from src.database import db
 from flask import jsonify
 from src.auth.models import User
-from src.auth.schemas import user_schema, users_schema, user_in_schema
 
 ACCESS_TOKEN_EXPIRE_MINUTES = 120
 ALGORITHM = 'HS256'
