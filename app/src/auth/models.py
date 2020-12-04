@@ -1,4 +1,5 @@
 from src.database import Column, Model, db
+from src.todo.models import Todo
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 
@@ -9,6 +10,7 @@ class User(Model):
     email = Column(db.String(128), unique=True, nullable=False)
     password_hash = Column(db.String(128), nullable=False)
     confirmed = Column(db.Boolean, default=False)
+    todos = db.relationship(Todo, backref='user', lazy=True)
     created_at = Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
     def set_password(self, password):

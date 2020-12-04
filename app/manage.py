@@ -4,8 +4,8 @@ from src.main import app, db, migrate
 cli = FlaskGroup(app)
 
 
-@cli.command('create_db')
-def create_db():
+@cli.command('migrate')
+def migrate():
     db.drop_all()
     db.create_all()
     db.session.commit()

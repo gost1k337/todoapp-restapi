@@ -4,7 +4,7 @@ services:
   web:
     build: ./app
     env_file: ./app/.env
-    restart: always
+    restart: on-failure
     ports:
       - 8080:${APP_PORT}
     volumes:
@@ -23,14 +23,5 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     ports:
       - ${POSTGRES_PORT}:5432
-    redis:
-      image: redis:alpine
-      command: redis-server
-      restart: unless-stopped
-      ports:
-        - ${REDIS_PORT}:6379
-      environment:
-        - REDIS_REPLICATION_MODE=master
-
 volumes:
   postgres_data:
