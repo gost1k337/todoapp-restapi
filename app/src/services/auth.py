@@ -1,4 +1,4 @@
-from flask_jwt_extended import create_access_token, get_jwt_identity
+from flask_jwt_extended import create_access_token
 from werkzeug.security import generate_password_hash
 from src.database import db
 from flask import jsonify

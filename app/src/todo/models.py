@@ -4,7 +4,8 @@ from datetime import datetime
 
 class Todo(Model):
     id = Column(db.Integer, primary_key=True)
-    username = Column(db.String(80), nullable=False)
+    title = Column(db.String(255), nullable=False)
+    completed = Column(db.Boolean, default=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     created_at = Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
